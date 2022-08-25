@@ -1,0 +1,135 @@
+<div class="content">
+
+  <form [formGroup]="formPesquisa"  class="form-container">
+  <p>
+    <mat-toolbar class="hotel-header">
+      <mat-form-field class="form">
+        <mat-label> Hotel </mat-label>
+        <mat-select matNativeControl formControlName="hotel">
+          <mat-option> -- select Hotel -- </mat-option>
+          <mat-option
+            [value]="dataSources.nomeColab"
+            *ngFor="let dataSources of dataSource"
+            >{{dataSources.nomeColab }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form">
+        <mat-label> Departamento </mat-label>
+        <mat-select matNativeControl formControlName="departamento">
+          <mat-option> -- select Departamento -- </mat-option>
+          <mat-option
+            [value]="colaborador.nomeColab"
+            *ngFor="let colaborador of colaboradores"
+            >{{ colaborador.nomeColab }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form">
+        <mat-label> Colaborador </mat-label>
+        <mat-select matNativeControl formControlName="colaborador">
+          <mat-option> -- select colaborador -- </mat-option>
+          <mat-option
+            [value]="colaborador.nomeColab"
+            *ngFor="let colaborador of colaboradores"
+            >{{ colaborador.nomeColab }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </mat-toolbar>
+  </p>
+  </form>
+      <div class="mat-elevation-z8 content-table">
+
+              <mat-table class="table"  [dataSource]="dataSource" matSort (matSortChange)="sortEvent = $event; carregarColaboradores()">
+                <ng-container matColumnDef="nomeColab">
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header>NOME</mat-header-cell>
+                  <mat-cell  *matCellDef="let row">{{ row.nomeColab }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="telefoneColab">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>TELEFONE</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.telefoneColab }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="emailColab">
+                  <mat-header-cell *matHeaderCellDef>EMAIL</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.emailColab }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="departamentos">
+                  <mat-header-cell *matHeaderCellDef>EXTENSÃO</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.estensaoColab }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="enderecoColab">
+                  <mat-header-cell *matHeaderCellDef>ENDEREÇO</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.enderecoColab }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="extensaofk">
+                  <mat-header-cell *matHeaderCellDef>EXTENSÃO</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.extensaofk }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="numeroRh">
+                  <mat-header-cell *matHeaderCellDef>NUMERO RH</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.numeroRh }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="tipoColab">
+                  <mat-header-cell *matHeaderCellDef>TIPO COLABORADOR</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.tipoColab }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="departamento">
+                  <mat-header-cell *matHeaderCellDef>DEPARTAMENTO</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.nomeDep }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="hotel">
+                  <mat-header-cell *matHeaderCellDef>HOTEL</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{ row.nomeHotel }}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="acao">
+
+                  <mat-header-cell class="action-column" mat-header-cell *matHeaderCellDef>AÇÕES:</mat-header-cell>
+                  <mat-cell *matCellDef="let row" class="action-column">
+                    <button mat-icon-button color="primary" aria-label="ver" (click)="alterarColaborador()">
+                      <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button mat-icon-button color="warn"aria-label="apagar"  (click)="apagarColaborador()">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+              </mat-table>
+
+
+              <div *ngIf="carregando" class="spinner">
+                <mat-spinner></mat-spinner>
+              </div>
+              <div *ngIf="!carregando && totalElements === 0" class="spinner">
+                <p>Sem Dados...</p>
+              </div>
+
+              <mat-paginator
+                [length]="totalElements"
+                [pageSize]="sizeInicial"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event; carregarColaboradores()"
+                aria-label="Select page"
+              >
+              </mat-paginator>
+
+
+    </div>
+
+</div>

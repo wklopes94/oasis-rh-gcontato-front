@@ -1,0 +1,36 @@
+<mat-sidenav-container class="container">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <a routerLink="./" mat-list-item>
+        <i class="material-icons">home</i>
+        Home
+      </a>
+
+    <a routerLink='./entidades/hotels' mat-list-item>
+        Hotel
+    </a>
+    <a routerLink='./entidades/departamentos' mat-list-item  >
+        Departamento
+    </a>
+    <a routerLink='./entidades/extensoes' mat-list-item>
+        Extensão
+    </a>
+    <a routerLink='./entidades/tipocolaboradores' mat-list-item>
+        Tipo de Colaborador
+    </a>
+    <a routerLink='./entidades/colaboradores' mat-list-item >
+       Colaborador
+    </a>
+
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+
+  <mat-sidenav-content>
+
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

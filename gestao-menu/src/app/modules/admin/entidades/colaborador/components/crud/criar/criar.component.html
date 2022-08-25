@@ -1,0 +1,70 @@
+<div mat-dialog-content>
+<mat-card>
+
+  <mat-toolbar color="primary">Colaborador</mat-toolbar>
+
+  <mat-card-content>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit">
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Nome Colaborador</mat-label>
+        <input matInput placeholder="Nome Colaborador" formControlName="nomeColab" >
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input type="tel" matInput placeholder="Telefone" formControlName="telefoneColab"/>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput placeholder="Email" formControlName="emailColab" placeholder="nome.aplido@oasisatlantico.com"/>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Endereço</mat-label>
+        <input matInput placeholder="Endereço" formControlName="enderecoColab"/>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Numero RH</mat-label>
+        <input matInput placeholder="Numero RH" formControlName="numeroRh"/>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Extensão</mat-label>
+        <mat-select formControlName="extensaofk">
+          <mat-option value="2ba6bea3-3403-455e-95e6-fb9bb9420573"></mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Tipo de Colaborador</mat-label>
+        <mat-select formControlName="tipoColabFk">
+          <mat-option value="31f49853-e188-4272-b3df-77841efc7100"></mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Departamento</mat-label>
+        <mat-select formControlName="departamentoFk">
+          <mat-option value="04b72179-2d34-4fff-88d1-1ca83cd98a9e"></mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+
+  </mat-card-content>
+
+
+
+</mat-card>
+</div>
+
+
+<divf mat-dialog-actions>
+  <button mat-raised-button color="primary" style="margin-left: 8px;" (click)="onSubmit()"  mat-button [mat-dialog-close]="true" cdkFocusInitial >Guardar</button>
+  <button mat-raised-button color="secondary" style="margin-left: 8px;" (click)="resetFields()">Limpar</button>
+  <button mat-raised-button color="warn" style="margin-left: 8px;" mat-dialog-close>Cancelar</button>
+</divf>

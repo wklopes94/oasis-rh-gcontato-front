@@ -1,0 +1,71 @@
+<div class="content">
+
+  <form [formGroup]="formPesquisa"  class="form-container">
+  <p>
+    <mat-toolbar class="hotel-header">
+      <mat-form-field class="form">
+        <mat-label> Hotel </mat-label>
+        <mat-select matNativeControl formControlName="hotel">
+          <mat-option> -- select Hotel -- </mat-option>
+          <mat-option></mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-toolbar>
+  </p>
+  </form>
+      <div class="mat-elevation-z8 content-table">
+
+              <table class="table" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortEvent = $event; carregarColaboradores()">
+                <ng-container matColumnDef="nome">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>NOME</th>
+                  <td mat-cell *matCellDef="let row">{{ row.nome }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="numeroFixo">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>NUMERO FIXO</th>
+                  <td mat-cell *matCellDef="let row">{{ row.numeroFixo }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="acao">
+
+                  <th class="mat-header" mat-header-cell *matHeaderCellDef>AÇÕES:</th>
+                  <td mat-cell *matCellDef="let row">
+
+
+                      <button mat-icon-button color="primary" aria-label="ver" (click)="alterarHotel(row.id)">
+                          <mat-icon>edit</mat-icon>
+                      </button>
+
+                      <button mat-icon-button color="warn"aria-label="apagar"  (click)="apagarHotel(row.id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+              </table>
+
+
+              <div *ngIf="carregando" class="spinner">
+                <mat-spinner></mat-spinner>
+              </div>
+              <div *ngIf="!carregando && totalElements === 0" class="spinner">
+                <p>Sem Dados...</p>
+              </div>
+
+
+              <mat-paginator
+                [length]="totalElements"
+                [pageSize]="sizeInicial"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event; carregarColaboradores()"
+                aria-label="Select page"
+              >
+              </mat-paginator>
+    </div>
+
+</div>
+

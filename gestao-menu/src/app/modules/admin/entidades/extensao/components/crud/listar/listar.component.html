@@ -1,0 +1,74 @@
+<div class="content">
+
+  <form [formGroup]="formPesquisa"  class="form-container">
+  <p>
+    <mat-toolbar class="hotel-header">
+      <mat-form-field class="form">
+        <mat-label> Extensão </mat-label>
+        <mat-select matNativeControl formControlName="hotel">
+          <mat-option> -- select Extensao -- </mat-option>
+          <mat-option
+
+            *ngFor="let dataSources of dataSource"
+            ></mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </mat-toolbar>
+  </p>
+  </form>
+      <div class="mat-elevation-z8 content-table">
+
+              <table class="table" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortEvent = $event; carregarExtensao()">
+                <ng-container matColumnDef="numero">
+                  <th mat-header-cell *matHeaderCellDef> EXTENSÃO </th>
+                  <td mat-cell *matCellDef="let row"> {{row.numero}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="departamento">
+                  <th mat-header-cell *matHeaderCellDef> NOME DEPARTAMENTO </th>
+                  <td mat-cell *matCellDef="let row"> {{row.departamento}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="hotels">
+                  <th mat-header-cell *matHeaderCellDef> NOME HOTEL </th>
+                  <td mat-cell *matCellDef="let row"> {{row.hotels}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="acao">
+
+                  <th class="mat-header" mat-header-cell *matHeaderCellDef>AÇÕES:</th>
+                  <td mat-cell *matCellDef="let row" class="action-column">
+                      <button mat-icon-button color="primary" aria-label="ver" (click)="alterarExtensao()">
+                          <mat-icon>edit</mat-icon>
+                      </button>
+
+                      <button mat-icon-button color="warn"aria-label="apagar"  (click)="apagarExtensao()">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+
+              <div *ngIf="carregando" class="spinner">
+                <mat-spinner></mat-spinner>
+              </div>
+              <div *ngIf="!carregando && totalElements === 0" class="spinner">
+                <p>Sem Dados...</p>
+              </div>
+
+              <mat-paginator
+                [length]="totalElements"
+                [pageSize]="sizeInicial"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event; carregarExtensao()"
+                aria-label="Select page"
+              >
+              </mat-paginator>
+
+    </div>
+
+</div>
