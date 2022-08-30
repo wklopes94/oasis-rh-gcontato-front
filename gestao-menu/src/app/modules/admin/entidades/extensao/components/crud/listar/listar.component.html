@@ -14,7 +14,7 @@
         <mat-label> Departamento </mat-label>
         <mat-select matNativeControl formControlName="departamento">
           <mat-option (click)="carregarExtensao()" [value]=null> -- select Departamento -- </mat-option>
-          <mat-option (click)="findByDepartamentoFk()"  [value]="departamento.nome" *ngFor="let departamento of dataSourceSelectDepartamento"
+          <mat-option (click)="carregarSelectExtensoEDatasorce()"  [value]="departamento.nome" *ngFor="let departamento of dataSourceSelectDepartamento"
             >{{departamento.nome}}</mat-option>
         </mat-select>
       </mat-form-field>

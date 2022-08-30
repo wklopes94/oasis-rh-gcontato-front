@@ -93,6 +93,11 @@ export class ListarComponent implements AfterViewInit {
     this.findByHotelFk();
   }
 
+  carregarSelectExtensoEDatasorce(){
+    this.findByDepartamentoFkForDtasource();
+    this.findByDepartamentoFkForSelect();
+  }
+
 
   carregarExtensao() {
 
@@ -141,7 +146,7 @@ export class ListarComponent implements AfterViewInit {
 
     //this.carregando = true;
     let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
-    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 90;
+    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 1000;
 
     //SORT
     this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
@@ -170,7 +175,7 @@ export class ListarComponent implements AfterViewInit {
 
     //this.carregando = true;
     let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
-    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 90;
+    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 1000;
 
     //SORT
     this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
@@ -238,7 +243,7 @@ export class ListarComponent implements AfterViewInit {
       });
   }
 
-  findByDepartamentoFk() {
+  findByDepartamentoFkForDtasource() {
 
     this.carregando = true;
     let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
@@ -253,6 +258,48 @@ export class ListarComponent implements AfterViewInit {
       .subscribe((data: {}) => {
         this.resultado = data;
         this.dataSource = this.resultado._embedded.extensoes;
+        this.mypages = this.resultado.page;
+        this.totalElements = this.resultado.page.totalElements;
+        this.carregando = false;
+        console.log('Foi lido os seguintes dados, item: ', this.dataSource);
+
+        this.dataSource.forEach((elem) => {
+          return this.service
+            .getDataByURLS(elem._links.departamentoFk.href)
+            .subscribe((departamentoFk: {}) => {
+              let departamento = JSON.stringify(departamentoFk);
+
+              elem.departamento = JSON.parse(departamento).nome;
+              console.log('Departamentos',elem.departamento);
+
+              return this.service
+                    .getDataByURL(
+                      JSON.parse(departamento)._links.hotelFk.href
+                    )
+                    .subscribe((hotel: {}) => {
+                      let hotelColab = JSON.stringify(hotel);
+                      elem.hotels = JSON.parse(hotelColab).nome;
+                    });
+
+            });
+        });
+      });
+  }
+
+  findByDepartamentoFkForSelect() {
+
+    this.carregando = true;
+    let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 1000;
+
+    //SORT
+    this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+    this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+    return this.service
+      .findByDepartamentoFk(this.formPesquisa?.value.departamento, pageIndex, pageSize, this.sort, this.direccaoOrdem)
+      .subscribe((data: {}) => {
+        this.resultado = data;
         this.dataSourceSelectExtensao = this.resultado._embedded.extensoes;
         this.mypages = this.resultado.page;
         this.totalElements = this.resultado.page.totalElements;
@@ -281,6 +328,7 @@ export class ListarComponent implements AfterViewInit {
         });
       });
   }
+
 
   findByHotelFk() {
 
