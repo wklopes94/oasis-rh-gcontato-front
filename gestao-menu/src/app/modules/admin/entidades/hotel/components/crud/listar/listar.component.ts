@@ -29,15 +29,15 @@ export class ListarComponent implements AfterViewInit {
 
    //CRIAR FORMULARIO
    formPesquisa: FormGroup = this.formBuilder.group({
-    hotel: [null],
-    departamento: [null],
-    colaborador: [null]
+    hotel: [null]
   });
 
 
   //Pequisa Colaboradores All
   resultado: any = [];
   dataSource: IHotel[] = [];
+
+  dataSourceSelect: IHotel[] = [];
 
   //PAGINAÇÃO
   mypages?: MyPages;
@@ -46,6 +46,10 @@ export class ListarComponent implements AfterViewInit {
   sizeInicial: number = 3;
   sort: string = 'tipoColaborador';
   direccaoOrdem: string = 'asc';
+
+  //CABECALHO PARA PESQUISA ATIVO
+
+  estado: string = 'a';
 
   pageSizeOptions: number[] = [1, 3, 6, 10];
 
@@ -81,6 +85,7 @@ export class ListarComponent implements AfterViewInit {
   searchKey!: string;
 
   ngAfterViewInit()  {
+    this.carregarColaboradoresSelect();
     this.carregarColaboradores();
   }
 
@@ -95,8 +100,10 @@ carregarColaboradores() {
   this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
   this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
 
+  this.estado = 'a';
+
   return this.service
-    .findAl(pageIndex, pageSize, this.sort, this.direccaoOrdem)
+    .findByAtivo(pageIndex, pageSize, this.sort, this.direccaoOrdem, this.estado)
     .subscribe((data: IResponsePageableHotel) => {
       console.log('Data Hotel: ', data);
 
@@ -109,9 +116,51 @@ carregarColaboradores() {
 
 }
 
-  HotelCreate(): void{
-    this.router.navigate(["hotel/create"])
-  }
+
+carregarColaboradoresSelect() {
+
+  //this.carregando = true;
+  let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+  let pageSize = this.pageEvent ? this.pageEvent.pageSize : 90;
+
+  //SORT
+  this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+  this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+  this.estado = 'a';
+
+  return this.service
+    .findByAtivo(pageIndex, pageSize, this.sort, this.direccaoOrdem, this.estado)
+    .subscribe((data: IResponsePageableHotel) => {
+      console.log('Data Hotel: ', data);
+
+      this.resultado = data;
+      this.dataSourceSelect = this.resultado._embedded.hotels;
+      this.mypages = this.resultado.page;
+      this.totalElements = this.resultado.page.totalElements;
+      console.log('Foi lido os seguintes dados, item: ', this.dataSource);
+    });
+}
+
+findByName(){
+  let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+  let pageSize = this.pageEvent ? this.pageEvent.pageSize : 1000;
+
+  //SORT
+  this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+  this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+   return this.service.findByName(pageIndex, pageSize, this.sort, this.direccaoOrdem,this.formPesquisa?.value.hotel).subscribe(data => {
+      console.log('Data Hotel: ', data);
+      this.resultado = data;
+      this.dataSource = this.resultado._embedded.hotels;
+      this.mypages = this.resultado.page;
+      this.totalElements = this.resultado.page.totalElements;
+      console.log('Foi lido os seguintes dados, item: ', this.dataSource);
+  })
+}
+
+
 
   getAllHotels() {
     return this.dataSource;

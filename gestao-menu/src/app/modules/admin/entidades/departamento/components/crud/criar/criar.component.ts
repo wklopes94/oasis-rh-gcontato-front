@@ -5,6 +5,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IHotel } from '../../../../hotel/interfaces/i-hotel';
+import { MyPages } from 'src/app/my-shared/interfaces-shared/my-pages';
+import { PageEvent } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
+import { IResponsePageableHotel } from '../../../../hotel/interfaces/i-response-pageable-hotel';
+import { HotelCrudService } from '../../../../hotel/services/hotel-crud.service';
 
 @Component({
   selector: 'app-criar',
@@ -15,9 +21,41 @@ export class CriarComponent implements OnInit {
 
   //CRIAR FORMULARIO
   form: FormGroup = this.formBuilder.group({});
+  dataSourceSelect: IHotel[] = [];
+  resultado: any = [];
+  //PAGINAÇÃO
+  mypages?: MyPages;
 
+  totalElements: number = 0;
+  sizeInicial: number = 3;
+  sort: string = 'tipoColaborador';
+  direccaoOrdem: string = 'asc';
 
-  constructor(private service: DepartamentoCrudService, private formBuilder: FormBuilder,  private router: Router,  private snack: MatSnackBar) { }
+  //CABECALHO PARA PESQUISA ATIVO
+
+  estado: string = 'a';
+
+  pageSizeOptions: number[] = [1, 3, 6, 10];
+
+  //PAGE_EVENT
+  pageEvent?: PageEvent;
+
+  //SORT_EVENT
+  sortEvent?: Sort;
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput
+        .split(',')
+        .map((str) => +str);
+    }
+  }
+
+  constructor(private service: DepartamentoCrudService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private snack: MatSnackBar,
+    private serviceHotel: HotelCrudService,) { }
 
   ngOnInit(): void {
 
@@ -26,6 +64,7 @@ export class CriarComponent implements OnInit {
       hotelFk: [''],
     });
 
+    this.carregarColaboradoresSelect();
 
   }
 
@@ -71,5 +110,30 @@ crearObjectoFromFROM(): IReqDepartamento{
 resetFields(){
   this.form.reset();
   alert('CLEAN FIELDS');
+}
+
+carregarColaboradoresSelect() {
+
+  //this.carregando = true;
+  let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+  let pageSize = this.pageEvent ? this.pageEvent.pageSize : 10000;
+
+  //SORT
+  this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+  this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+  this.estado = 'a';
+
+  return this.serviceHotel
+    .findByAtivo(pageIndex, pageSize, this.sort, this.direccaoOrdem, this.estado)
+    .subscribe((data: IResponsePageableHotel) => {
+      console.log('Data Hotel: ', data);
+
+      this.resultado = data;
+      this.dataSourceSelect = this.resultado._embedded.hotels;
+      this.mypages = this.resultado.page;
+      this.totalElements = this.resultado.page.totalElements;
+      console.log('Foi lido os seguintes dados, item: ', this.dataSourceSelect);
+    });
 }
 }

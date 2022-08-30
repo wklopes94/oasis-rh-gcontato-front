@@ -19,6 +19,7 @@ import { ApagarComponent } from '../apagar/apagar.component';
 })
 export class ListarComponent implements AfterViewInit {
 
+  isPopupOpened = true;
   carregando: boolean = false;
 
   //CRIAR FORMULARIO
@@ -66,7 +67,10 @@ export class ListarComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private service: ExtensaoCrudService, private router: Router, private formBuilder: FormBuilder, private dialog : MatDialog) { }
+  constructor(private service: ExtensaoCrudService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private dialog : MatDialog) { }
 
   ngAfterViewInit(): void {
     this.carregarExtensao();
@@ -115,10 +119,17 @@ export class ListarComponent implements AfterViewInit {
       });
   }
 
+  getAllHotels() {
+    return this.dataSource;
+  }
 
-  alterarExtensao(){
+
+  alterarExtensao(number: string){
+    this.isPopupOpened = true;
+    const extensao = this.getAllHotels().find(c => c.id == number);
     const dialogRef = this.dialog.open(AlterarComponent, {
-        width: '30%'
+        width: '30%',
+        data: extensao
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -136,9 +147,12 @@ export class ListarComponent implements AfterViewInit {
     });
   }
 
-  apagarExtensao(){
+  apagarExtensao(number: string){
+    this.isPopupOpened = true;
+    const extensao = this.getAllHotels().find(c => c.id == number);
     const dialogRef = this.dialog.open(ApagarComponent, {
-      width: '30%'
+      width: '30%',
+      data: extensao
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -146,3 +160,4 @@ export class ListarComponent implements AfterViewInit {
     });
   }
 }
+

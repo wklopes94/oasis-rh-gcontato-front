@@ -1,31 +1,20 @@
 <div mat-dialog-content>
   <mat-card>
 
-    <mat-toolbar color="primary">Departamento</mat-toolbar>
+    <mat-toolbar color="primary">Tipo Colaborador</mat-toolbar>
 
     <mat-card-content>
 
       <form [formGroup]="form">
 
         <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Departamento</mat-label>
-          <input matInput placeholder="Nome Colaborador" formControlName="nome" >
-        </mat-form-field>
-
-
-
-        <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Hotel</mat-label>
-          <mat-select formControlName="hotelFk">
-            <mat-option value="c85f3f69-8748-4028-b038-2e3cc00883f2"></mat-option>
-          </mat-select>
+          <mat-label>Tipo Colaborador</mat-label>
+          <input  matInput placeholder="Tipo Colaborador" formControlName="tipoColaborador"/>
         </mat-form-field>
 
       </form>
 
     </mat-card-content>
-
-
 
   </mat-card>
   </div>

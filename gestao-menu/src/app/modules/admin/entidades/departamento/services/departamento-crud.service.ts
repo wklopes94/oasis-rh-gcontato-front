@@ -1,3 +1,4 @@
+import { IReqDepartamento } from './../interfaces/i-req-departamento';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, delay, Observable, take } from 'rxjs';
@@ -16,13 +17,6 @@ export class DepartamentoCrudService extends ApiCrudService<IDepartamento> {
   constructor( protected override http: HttpClient) {
     super(http, 'departamentos');
    }
-
-
-  createDep(departamento: IResponsePageableDepartamento, id_dep: String){
-
-    const url = `${this.baseUrl}/departamentos?hotelFk=${id_dep}`
-    return this.http.post<IResponsePageableDepartamento>(url, departamento)
-  }
 
   findAll(page: number, size: number, sort: string, ordem: string): Observable<IResponsePageableDepartamento> {
     console.log('ENTROU');
@@ -54,7 +48,74 @@ export class DepartamentoCrudService extends ApiCrudService<IDepartamento> {
           catchError(this.errorMgmt)
         );
     }
+          // Update Data
+  updateDatas(id: number, record: IReqDepartamento): Observable<IResponsePageableDepartamento> {
+    let url = `${super.getAPIURL}/${id}`;
+    return this.http.put<IResponsePageableDepartamento>(url, record, { headers: this.headers }).pipe(
+      take(1),
+      catchError(this.errorMgmt)
+    );
+  }
+
+  delete(id: String): Observable<void>{
+    const url = `${this.baseUrl}/departamentos/${id}`
+    return this.http.delete<void>(url)
+  }
 
 
+  findByName(
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+    nome: string
+  ): Observable<IResponsePageableDepartamento>{
+    const  url = `${this.baseUrl}/departamentos/search/findBynome?nome=${nome}&page=${page}&size=${size}&sort=${sort},${ordem}`
+    return this.http.get<IResponsePageableDepartamento>(url, { headers: super.headers }).pipe(delay(0),take(1));
+  }
+
+  findByAtivo(
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+    estado: string
+  ): Observable<IResponsePageableDepartamento> {
+    console.log('ENTROU');
+
+    //http://localhost:8686/xxxxxx?page=0&size=2&sort=nome,asc
+
+    let url = `${super.getAPIURL}/search/findByEstado?estado=${estado}&page=${page}&size=${size}&sort=${sort},${ordem}`;
+    return this.http
+      .get<IResponsePageableDepartamento>(url, { headers: super.headers })
+      .pipe(delay(0),take(1));
+  }
+
+  findByHotelFk(page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+    hotel: string): Observable<IResponsePageableDepartamento>{
+    let url = `${super.getAPIURL}/search/findByhotelFkNome?nome=${hotel}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableDepartamento>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
+
+  findByNomeAndHotelFk(nome: string,
+    hotel: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+
+    ): Observable<IResponsePageableDepartamento>{
+    let url = `${super.getAPIURL}/search/findByNomeAndHotelFkNome?nome=${nome}&hotel=${hotel}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableDepartamento>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
 
 }

@@ -5,6 +5,7 @@ import { Observable, delay, take, catchError } from 'rxjs';
 import { ApiCrudService } from 'src/app/my-core/services/api-crud.service';
 import { environment } from 'src/environments/environment';
 import { IExtensao } from '../interfaces/i-extensao';
+import { IReqExtensao } from '../interfaces/i-req-extensao';
 
 @Injectable({
   providedIn: 'root'
@@ -67,12 +68,17 @@ export class ExtensaoCrudService extends ApiCrudService<IExtensao>  {
   }
 
   delete(id: String): Observable<void>{
-    const url = `${this.baseUrl}/extensao/${id}`
+    const url = `${this.baseUrl}/extensoes/${id}`
     return this.http.delete<void>(url)
   }
 
-  update(extensao: IExtensao): Observable<void>{
-    const url = `${this.baseUrl}/extensao/${extensao.id}`
-    return this.http.put<void>(url, extensao)
+  // Update Data
+  updateDatas(id: number, record: IReqExtensao): Observable<IResponsePageableExtensao> {
+    let url = `${super.getAPIURL}/${id}`;
+    return this.http.put<IResponsePageableExtensao>(url, record, { headers: this.headers }).pipe(
+      take(1),
+      catchError(this.errorMgmt)
+    );
   }
+
 }

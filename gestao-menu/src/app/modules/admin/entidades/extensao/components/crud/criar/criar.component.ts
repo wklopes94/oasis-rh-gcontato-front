@@ -1,9 +1,8 @@
-import { IDepartamento } from './../../../../departamento/interfaces/i-departamento';
 import { ExtensaoCrudService } from './../../../services/extensao-crud.service';
 import { Component, OnInit } from '@angular/core';
-import { IExtensao } from '../../../interfaces/i-extensao';
+
 import { Router } from '@angular/router';
-import { DepartamentoCrudService } from '../../../../departamento/services/departamento-crud.service';
+
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IReqExtensao } from '../../../interfaces/i-req-extensao';

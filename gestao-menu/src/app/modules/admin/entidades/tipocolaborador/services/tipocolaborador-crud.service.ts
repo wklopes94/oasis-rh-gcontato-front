@@ -67,18 +67,20 @@ export class TipocolaboradorCrudService extends ApiCrudService<ITipocolaborador>
 
   }
 
+
+
   delete(id: String): Observable<void>{
-    const url = `${this.baseUrl}/tipocolaborador/${id}`
-    return this.http.delete<void>(url).pipe(
-      //delay(2000), //para remover em produção
-      take(1)); // com isso já não é preciso fazer unsubscribe
+    const url = `${this.baseUrl}/tipocolaboradores/${id}`
+    return this.http.delete<void>(url)
   }
 
-  update(departamento: ITipocolaborador): Observable<void>{
-    const url = `${this.baseUrl}/tipocolaborador/${departamento.id}`
-    return this.http.put<void>(url, departamento).pipe(
-      //delay(2000), //para remover em produção
-      take(1)); // com isso já não é preciso fazer unsubscribe
+  // Update Data
+  updateDatas(id: number, record: IReqTipocolaborador): Observable<IResponsePageableTipocolaborador> {
+    let url = `${super.getAPIURL}/${id}`;
+    return this.http.put<IResponsePageableTipocolaborador>(url, record, { headers: this.headers }).pipe(
+      take(1),
+      catchError(this.errorMgmt)
+    );
   }
 
 

@@ -11,6 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlterarComponent } from '../alterar/alterar.component';
 import { CriarComponent } from '../criar/criar.component';
 import { ApagarComponent } from '../apagar/apagar.component';
+import { IResponsePageableDepartamento } from '../../../interfaces/i-response-pageable-departamento';
+import { IHotel } from '../../../../hotel/interfaces/i-hotel';
+import { IResponsePageableHotel } from '../../../../hotel/interfaces/i-response-pageable-hotel';
 
 @Component({
   selector: 'app-listar',
@@ -20,16 +23,15 @@ import { ApagarComponent } from '../apagar/apagar.component';
 export class ListarComponent implements AfterViewInit {
 
 
-
+  isPopupOpened = true;
   carregando: boolean = false;
 
 
-    //CRIAR FORMULARIO
-    formPesquisa: FormGroup = this.formBuilder.group({
+  //CRIAR FORMULARIO
+  formPesquisa: FormGroup = this.formBuilder.group({
       hotel: [null],
-      departamento: [null],
-      colaborador: [null]
-    });
+      departamento: [null]
+  });
 
   //Pesquisa de Nome Departamento
   departamento: any[] = [];
@@ -37,7 +39,8 @@ export class ListarComponent implements AfterViewInit {
   //Pequisa Departamento All
   resultado: any = [];
   colaboradores: any = [];
-  dataSources$: IDepartamento[] = [];
+  dataSourceSelectDepartamento: IDepartamento[] = [];
+  dataSourceSelectHotel: IHotel[] = [];
   dataSource$: IDepartamento[] = [];
 
   //PAGINAÇÃO
@@ -47,6 +50,10 @@ export class ListarComponent implements AfterViewInit {
   sizeInicial: number = 3;
   sort: string = 'nome';
   direccaoOrdem: string = 'asc';
+
+  //CABECALHO PARA PESQUISA ATIVO
+
+  estado: string = 'a';
 
   pageSizeOptions: number[] = [1, 3, 6, 10];
 
@@ -69,12 +76,18 @@ export class ListarComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private serviceHot: HotelCrudService, private service: DepartamentoCrudService, private router: Router, private dialog : MatDialog, private formBuilder: FormBuilder) { }
+  constructor(private serviceHot: HotelCrudService,
+    private service: DepartamentoCrudService,
+    private router: Router,
+    private dialog : MatDialog,
+    private formBuilder: FormBuilder,
+    private serviceHotel: HotelCrudService) { }
 
 
   ngAfterViewInit(): void {
+    //this.carregarDepartamentoSelect();
     this.carregarDepartamento();
-
+    this.carregarHotelSelect();
   }
 
   carregarDepartamento() {
@@ -111,9 +124,122 @@ export class ListarComponent implements AfterViewInit {
       });
   }
 
-  alterarDepartamento(){
+  carregarDepartamentoSelect() {
+
+    //this.carregando = true;
+    let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 90;
+
+    //SORT
+    this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+    this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+
+
+    return this.service
+      .findByHotelFk(pageIndex, pageSize, this.sort, this.direccaoOrdem, this.formPesquisa?.value.hotel)
+      .subscribe((data: {}) => {
+        this.resultado = data;
+        //this.dataSourceSelectDepartamento = this.resultado;
+        this.dataSourceSelectDepartamento = this.resultado._embedded.departamentos;
+        this.dataSource$ = this.resultado._embedded.departamentos;
+        this.mypages = this.resultado.page;
+        this.totalElements = this.resultado.page.totalElements;
+        this.carregando = false;
+        console.log('Foi lido os seguintes dados, item: ', this.dataSourceSelectDepartamento);
+
+        this.dataSource$.forEach((elem) => {
+          return this.service
+            .getDataByURLS(elem._links.hotelFk.href)
+            .subscribe((hotelfk: {}) => {
+              let hotel = JSON.stringify(hotelfk);
+
+              elem.hotelFk = JSON.parse(hotel).nome;
+              console.log(elem.hotelFk);
+
+            });
+        });
+
+
+      });
+
+  }
+
+  carregarHotelSelect() {
+
+    //this.carregando = true;
+    let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 90;
+
+    //SORT
+    this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+    this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+    this.estado = 'a';
+
+    return this.serviceHotel
+      .findByAtivo(pageIndex, pageSize, this.sort, this.direccaoOrdem, this.estado)
+      .subscribe((data: IResponsePageableHotel) => {
+        console.log('Data Hotel: ', data);
+
+        this.resultado = data;
+        this.dataSourceSelectHotel = this.resultado._embedded.hotels;
+        this.mypages = this.resultado.page;
+        this.totalElements = this.resultado.page.totalElements;
+        console.log('Foi lido os seguintes dados, item: ', this.dataSourceSelectHotel);
+      });
+  }
+
+
+
+  findByName(){
+    let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 1000;
+
+    //SORT
+    this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+    this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+    this.estado = 'a';
+       console.log(this.formPesquisa?.value.hotel);
+
+     return this.service.findByNomeAndHotelFk(this.formPesquisa?.value.departamento, this.formPesquisa?.value.hotel, pageIndex, pageSize, this.sort, this.direccaoOrdem).subscribe(data => {
+
+        console.log('Dados do FIND: ', data);
+
+        this.resultado = data;
+        this.dataSource$ = this.resultado._embedded.departamentos;
+        this.mypages = this.resultado.page;
+        this.totalElements = this.resultado.page.totalElements;
+        console.log('Foi lido os seguintes dados, item: ', this.dataSource$);
+
+
+        this.dataSource$.forEach((elem) => {
+          return this.service
+            .getDataByURLS(elem._links.hotelFk.href)
+            .subscribe((hotelfk: {}) => {
+              let hotel = JSON.stringify(hotelfk);
+
+              elem.hotelFk = JSON.parse(hotel).nome;
+              console.log(elem.hotelFk);
+
+            });
+        });
+
+
+    })
+  }
+
+  getAllHotels() {
+    return this.dataSource$;
+  }
+
+  alterarDepartamento(number: string){
+    this.isPopupOpened = true;
+    const departaemnto = this.getAllHotels().find(c => c.id == number);
     const dialogRef = this.dialog.open(AlterarComponent, {
-        width: '30%'
+        width: '30%',
+        data: departaemnto
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -131,9 +257,12 @@ export class ListarComponent implements AfterViewInit {
     });
   }
 
-  apagarDepartamento(){
+  apagarDepartamento(number: string){
+    this.isPopupOpened = true;
+    const departaemnto = this.getAllHotels().find(c => c.id == number);
     const dialogRef = this.dialog.open(ApagarComponent, {
-      width: '30%'
+      width: '30%',
+      data: departaemnto
     });
 
     dialogRef.afterClosed().subscribe(result => {

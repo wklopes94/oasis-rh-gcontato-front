@@ -4,7 +4,7 @@ import { ITipocolaborador } from './../../../interfaces/i-tipocolaborador';
 import { TipocolaboradorCrudService } from './../../../services/tipocolaborador-crud.service';
 
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { MyPages } from 'src/app/my-shared/interfaces-shared/my-pages';
@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CriaralterarComponent } from '../criaralterar/criaralterar.component';
 import { ApagarComponent } from '../apagar/apagar.component';
+import { AlterarComponent } from '../alterar/alterar.component';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { ApagarComponent } from '../apagar/apagar.component';
   styleUrls: ['./listar.component.scss']
 })
 export class ListarComponent implements AfterViewInit {
-
+  isPopupOpened = true;
   carregando: boolean = false;
 
   tipoColaboradores: ITipocolaborador[] = []
@@ -63,7 +64,10 @@ export class ListarComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
-  constructor(private service: TipocolaboradorCrudService, private router: Router,  private formBuilder: FormBuilder, private dialog : MatDialog) { }
+  constructor(private service: TipocolaboradorCrudService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private dialog : MatDialog) { }
 
   ngAfterViewInit(): void {
     this.carregarTipoColaboradores();
@@ -101,9 +105,17 @@ export class ListarComponent implements AfterViewInit {
   )
 
 }
-alterarTipoColaborador(){
-  const dialogRef = this.dialog.open(CriaralterarComponent, {
-      width: '30%'
+
+getAllHotels() {
+  return this.dataSource;
+}
+
+alterarTipoColaborador(number: string){
+  this.isPopupOpened = true;
+  const tipocolaborador = this.getAllHotels().find(c => c.id == number);
+  const dialogRef = this.dialog.open(AlterarComponent, {
+      width: '30%',
+      data: tipocolaborador
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -121,9 +133,12 @@ criarTipoColaborador(){
   });
 }
 
-apagarTipoColaborador(){
+apagarTipoColaborador(number: string){
+  this.isPopupOpened = true;
+  const tipocolaborador = this.getAllHotels().find(c => c.id == number);
   const dialogRef = this.dialog.open(ApagarComponent, {
-    width: '30%'
+    width: '30%',
+    data: tipocolaborador
   });
 
   dialogRef.afterClosed().subscribe(result => {

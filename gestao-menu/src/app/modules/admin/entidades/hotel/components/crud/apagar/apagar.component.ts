@@ -23,14 +23,6 @@ export class ApagarComponent implements OnInit {
       id: [this.data.id]
     });
   }
-/*
-  findById(): void{
-    this.service.findById(this.hoteis.id!).subscribe((resposta) =>{
-      this.hoteis = resposta
-      console.log(this.hoteis)
-    })
-  }
-  */
   delete(): void{
       this.service.delete(this.form?.value.id).subscribe((success) =>{
         this.message("Hotel Apagado");

@@ -78,14 +78,14 @@ export class GuestComponent implements OnInit {
 
   ngOnInit(): void {
     //this.findAllHotel();
-    this.carregarColaboradores();
+    //this.carregarColaboradores();
   }
 
 
 
-
+/*
   findAllHotel(){
-        this.service.findAll().subscribe(resposta => {
+        this.service.findAl.subscribe(resposta => {
         this.hoteis = resposta;
         this.hotelSelect = resposta;
         this.dataSource = new MatTableDataSource<IHotel>(this.hoteis);
@@ -156,6 +156,6 @@ export class GuestComponent implements OnInit {
     //this.serviceDep.findAllByHotel()
 
   }
-
+*/
 
 }

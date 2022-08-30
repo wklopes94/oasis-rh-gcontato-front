@@ -13,6 +13,7 @@ import { MaterialSharedModule } from 'src/app/my-shared/modules/material-shared/
 import { ComponentsSharedModule } from 'src/app/my-shared/modules/components-shared/components-shared.module';
 import { CriaralterarComponent } from './components/crud/criaralterar/criaralterar.component';
 import { TipocolaboradorCrudService } from './services/tipocolaborador-crud.service';
+import { AlterarComponent } from './components/crud/alterar/alterar.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TipocolaboradorCrudService } from './services/tipocolaborador-crud.serv
     ListarComponent,
     ApagarComponent,
     CriaralterarComponent,
+    AlterarComponent,
 
   ],
   imports: [

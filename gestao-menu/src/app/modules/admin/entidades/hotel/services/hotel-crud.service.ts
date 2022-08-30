@@ -20,10 +20,7 @@ export class HotelCrudService extends ApiCrudService<IReqHotel> {
     super(http, 'hotels');
   }
 
-    findAll(): Observable<IHotel[]>{
-      const url = `${this.baseUrl}/hotels`
-      return this.http.get<IHotel[]>(url);
-    }
+
     createColaboradorFromIReqHotel(record: any) {
       console.log('Json: ', record);
       let url = `${super.getAPIURL}`;
@@ -42,11 +39,7 @@ export class HotelCrudService extends ApiCrudService<IReqHotel> {
       return this.http.get<IHotel>(url)
     }
 
-    create(hotel: IHotel): Observable<IHotel>{
-      const url = `${this.baseUrl}/hotels`
-      return this.http.post<IHotel>(url, hotel);
 
-    }
 
       // Get all Data by URL
   getDataByURLS(url: string): Observable<IResponsePageableHotel> {
@@ -87,28 +80,36 @@ export class HotelCrudService extends ApiCrudService<IReqHotel> {
     );
   }
 
-     // Delete Data
-  deleteDatas(id: number): Observable<void> {
-    //const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    const requestOptions: Object = {
-      headers: super.headers,
-      responseType: 'text'
-    }
-
-    let url = `${super.getAPIURL}/${id}`;
-    return this.http.delete<void>(url, requestOptions).pipe(
-      take(1),
-      catchError(this.errorMgmt)
-    );
-  }
-
     findBydepartamentosNome(nome: String): Observable<IReqHotel[]>{
       const  url = `${this.baseUrl}/hotels/search/findBydepartamentosModelNome?nome=${nome}`
       return this.http.get<IReqHotel[]>(url)
     }
 
-    findByName(nome: String): Observable<IHotel[]>{
-      const  url = `${this.baseUrl}/hotels/search/findByNome?nome=${nome}`
-      return this.http.get<IHotel[]>(url)
+    findByName(
+      page: number,
+      size: number,
+      sort: string,
+      ordem: string,
+      nome: string
+    ): Observable<IResponsePageableHotel>{
+      const  url = `${this.baseUrl}/hotels/search/findBynome?nome=${nome}&page=${page}&size=${size}&sort=${sort},${ordem}`
+      return this.http.get<IResponsePageableHotel>(url, { headers: super.headers }).pipe(delay(0),take(1));
+    }
+
+    findByAtivo(
+      page: number,
+      size: number,
+      sort: string,
+      ordem: string,
+      estado: string
+    ): Observable<IResponsePageableHotel> {
+      console.log('ENTROU');
+
+      //http://localhost:8686/xxxxxx?page=0&size=2&sort=nome,asc
+
+      let url = `${super.getAPIURL}/search/findByestado?estado=${estado}&page=${page}&size=${size}&sort=${sort},${ordem}`;
+      return this.http
+        .get<IResponsePageableHotel>(url, { headers: super.headers })
+        .pipe(delay(0),take(1));
     }
 }

@@ -6,8 +6,8 @@
       <mat-form-field class="form">
         <mat-label> Hotel </mat-label>
         <mat-select matNativeControl formControlName="hotel">
-          <mat-option> -- select Hotel -- </mat-option>
-          <mat-option></mat-option>
+          <mat-option  (click)="carregarColaboradores()"> -- select Hotel -- </mat-option>
+          <mat-option (click)="findByName()" [value]="hotel.nome"  *ngFor="let hotel of dataSourceSelect">{{hotel.nome}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-toolbar>
