@@ -13,9 +13,18 @@
         </mat-form-field>
 
         <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Hotel</mat-label>
+          <mat-select formControlName="hotel">
+            <mat-option > -- select Hotel -- </mat-option>
+            <mat-option (click)="carregarDepartamentoSelect()" [value]="hotel.nome"  *ngFor="let hotel of dataSourceSelectHotel">{{hotel.nome}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
           <mat-label>Departamento</mat-label>
           <mat-select formControlName="departamentoFk">
-            <mat-option value="6538151f-2486-489f-a885-d04565d965a0"></mat-option>
+            <mat-option > -- select Departamento -- </mat-option>
+            <mat-option  [value]="departamento.id" *ngFor="let departamento of dataSourceSelectDepartamento">{{departamento.nome}}</mat-option>
           </mat-select>
         </mat-form-field>
 

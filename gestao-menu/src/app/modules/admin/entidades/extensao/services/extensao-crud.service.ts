@@ -81,4 +81,49 @@ export class ExtensaoCrudService extends ApiCrudService<IExtensao>  {
     );
   }
 
+  findByHotelFk(page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+    hotel: string): Observable<IResponsePageableExtensao>{
+    let url = `${super.getAPIURL}/search/findByDepartamentoFkHotelFkNome?nome=${hotel}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableExtensao>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
+
+  findByDepartamentoFk(departamento: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+
+    ): Observable<IResponsePageableExtensao>{
+    let url = `${super.getAPIURL}/search/findByDepartamentoFkNome?nome=${departamento}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableExtensao>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
+
+
+  findByDepartamentoFkAndNumero(
+    numero: string,
+    departamento: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+
+    ): Observable<IResponsePageableExtensao>{
+    let url = `${super.getAPIURL}/search/findByNumeroAndDepartamentoFkNome?numero=${numero}&departamento=${departamento}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableExtensao>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
+
+
+
 }

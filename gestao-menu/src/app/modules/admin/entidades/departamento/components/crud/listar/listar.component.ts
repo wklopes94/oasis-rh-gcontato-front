@@ -76,9 +76,9 @@ export class ListarComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private serviceHot: HotelCrudService,
+  constructor(
     private service: DepartamentoCrudService,
-    private router: Router,
+
     private dialog : MatDialog,
     private formBuilder: FormBuilder,
     private serviceHotel: HotelCrudService) { }

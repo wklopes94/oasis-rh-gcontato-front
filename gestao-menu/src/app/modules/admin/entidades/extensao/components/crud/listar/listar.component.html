@@ -4,14 +4,25 @@
   <p>
     <mat-toolbar class="hotel-header">
       <mat-form-field class="form">
-        <mat-label> Extensão </mat-label>
+        <mat-label>Hotel</mat-label>
         <mat-select matNativeControl formControlName="hotel">
+           <mat-option (click)="carregarExtensao()" [value]=null> -- select Hotel -- </mat-option>
+          <mat-option (click)="carregarSelectDepartamentoEDatasorce()" [value]="hotel.nome"  *ngFor="let hotel of dataSourceSelectHotel">{{hotel.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form">
+        <mat-label> Departamento </mat-label>
+        <mat-select matNativeControl formControlName="departamento">
+          <mat-option (click)="carregarExtensao()" [value]=null> -- select Departamento -- </mat-option>
+          <mat-option (click)="findByDepartamentoFk()"  [value]="departamento.nome" *ngFor="let departamento of dataSourceSelectDepartamento"
+            >{{departamento.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form">
+        <mat-label> Extensão </mat-label>
+        <mat-select matNativeControl formControlName="extensao">
           <mat-option> -- select Extensao -- </mat-option>
-          <mat-option
-
-            *ngFor="let dataSources of dataSource"
-            ></mat-option
-          >
+          <mat-option (click)="findByDepartamentoAndHotel()" [value]="extensao.numero"  *ngFor="let extensao of dataSourceSelectExtensao">{{extensao.numero}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-toolbar>
