@@ -24,16 +24,17 @@ import { AlterarComponent } from '../alterar/alterar.component';
 export class ListarComponent implements AfterViewInit {
   isPopupOpened = true;
   carregando: boolean = false;
+  estado: string = 'a';
+  resultado: any = [];
 
   tipoColaboradores: ITipocolaborador[] = []
   displayedColumns: string[] = ['tipoColaborador', 'acao'];
   dataSource: ITipocolaborador[] = [];
+  dataSourceSelectTipoColaborador: ITipocolaborador[] = [];
 
      //CRIAR FORMULARIO
      formPesquisa: FormGroup = this.formBuilder.group({
-      hotel: [null],
-      departamento: [null],
-      colaborador: [null]
+      tipoColaborador: [null]
     });
 
 
@@ -71,6 +72,8 @@ export class ListarComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.carregarTipoColaboradores();
+    this.carregarTipoColaboradoresSelect();
+
 
   }
 
@@ -89,14 +92,17 @@ export class ListarComponent implements AfterViewInit {
 
   let myObservable$: Observable<IResponsePageableTipocolaborador>;
 
+  this.estado = 'a';
 
-  myObservable$ = this.service.findAll(pageIndex, pageSize, this.sort, this.direccaoOrdem);
+  myObservable$ = this.service.findByAtivo
+  (this.estado, pageIndex, pageSize, this.sort, this.direccaoOrdem);
 
 
   myObservable$.subscribe(
     (data: IResponsePageableTipocolaborador) => {
       console.log('Foi lido os seguintes dados, item: ', data._embedded.tipocolaboradores);
       this.dataSource = data._embedded.tipocolaboradores;
+      this.dataSourceSelectTipoColaborador = data._embedded.tipocolaboradores;
       this.mypages = data.page;
       this.totalElements = this.mypages.totalElements;
 
@@ -104,6 +110,56 @@ export class ListarComponent implements AfterViewInit {
 
   )
 
+}
+
+carregarTipoColaboradoresSelect() {
+
+  //this.carregando = true;
+  let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+  let pageSize = this.pageEvent ? this.pageEvent.pageSize :  1000;
+
+  //SORT
+  this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+  this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+  this.estado = 'a';
+
+  return this.service
+    .findByTipoColaboradorAndEstado(this.formPesquisa?.value.tipoColaborador, this.estado, pageIndex, pageSize, this.sort, this.direccaoOrdem)
+    .subscribe((data: IResponsePageableTipocolaborador) => {
+      console.log('Data Hotel: ', data);
+
+      this.resultado = data;
+      this.dataSourceSelectTipoColaborador = this.resultado._embedded.tipocolaboradores;
+      this.mypages = this.resultado.page;
+      this.totalElements = this.resultado.page.totalElements;
+      console.log('Foi lido os seguintes dados, item: ', this.dataSource);
+    });
+}
+
+carregarTipoColaboradoresDataSource() {
+
+  //this.carregando = true;
+  let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+  let pageSize = this.pageEvent ? this.pageEvent.pageSize : this.sizeInicial;
+
+  //SORT
+  this.sort = this.sortEvent ? this.sortEvent.active : 'nome';
+  this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+  this.estado = 'a';
+
+  return this.service
+    .findByTipoColaboradorAndEstado(this.formPesquisa?.value.tipoColaborador, this.estado, pageIndex, pageSize, this.sort, this.direccaoOrdem)
+    .subscribe((data: IResponsePageableTipocolaborador) => {
+      console.log('Data Hotel: ', data);
+
+      this.resultado = data;
+      this.dataSource = this.resultado._embedded.tipocolaboradores;
+      this.mypages = this.resultado.page;
+      this.totalElements = this.resultado.page.totalElements;
+      console.log('Foi lido os seguintes dados, item: ', this.dataSource);
+    });
 }
 
 getAllHotels() {

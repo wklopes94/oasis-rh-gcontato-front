@@ -77,7 +77,6 @@ export class ListarComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private service: ExtensaoCrudService,
-    private router: Router,
     private formBuilder: FormBuilder,
     private dialog : MatDialog,
     private serviceHotel: HotelCrudService,
@@ -90,6 +89,7 @@ export class ListarComponent implements AfterViewInit {
 
   carregarSelectDepartamentoEDatasorce(){
     this.carregarDepartamentoSelect();
+    this.resetExt();
     this.findByHotelFk();
   }
 
@@ -100,6 +100,9 @@ export class ListarComponent implements AfterViewInit {
 
 
   carregarExtensao() {
+
+    this.resetDep();
+    this.resetExt();
 
     this.carregando = true;
     let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
@@ -306,26 +309,6 @@ export class ListarComponent implements AfterViewInit {
         this.carregando = false;
         console.log('Foi lido os seguintes dados, item: ', this.dataSource);
 
-        this.dataSource.forEach((elem) => {
-          return this.service
-            .getDataByURLS(elem._links.departamentoFk.href)
-            .subscribe((departamentoFk: {}) => {
-              let departamento = JSON.stringify(departamentoFk);
-
-              elem.departamento = JSON.parse(departamento).nome;
-              console.log('Departamentos',elem.departamento);
-
-              return this.service
-                    .getDataByURL(
-                      JSON.parse(departamento)._links.hotelFk.href
-                    )
-                    .subscribe((hotel: {}) => {
-                      let hotelColab = JSON.stringify(hotel);
-                      elem.hotels = JSON.parse(hotelColab).nome;
-                    });
-
-            });
-        });
       });
   }
 
@@ -412,6 +395,13 @@ export class ListarComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  resetDep(): void{
+    this.formPesquisa.get('departamento')?.reset();
+  }
+  resetExt(): void{
+    this.formPesquisa.get('extensao')?.reset();
   }
 }
 

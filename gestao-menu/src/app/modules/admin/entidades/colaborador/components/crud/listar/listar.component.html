@@ -6,11 +6,10 @@
       <mat-form-field class="form">
         <mat-label> Hotel </mat-label>
         <mat-select matNativeControl formControlName="hotel">
-          <mat-option> -- select Hotel -- </mat-option>
-          <mat-option
-            [value]="dataSources.nomeColab"
-            *ngFor="let dataSources of dataSource"
-            >{{dataSources.nomeColab }}</mat-option
+          <mat-option (click)="carregarColaboradores()"> -- select Hotel -- </mat-option>
+          <mat-option (click)="carregarSelectDepartamentoEDatasorce()" [value]="hotel.nome"  *ngFor="let hotel of dataSourceSelectHotel"
+
+            >{{hotel.nome}}</mat-option
           >
         </mat-select>
       </mat-form-field>
@@ -18,11 +17,10 @@
       <mat-form-field class="form">
         <mat-label> Departamento </mat-label>
         <mat-select matNativeControl formControlName="departamento">
-          <mat-option> -- select Departamento -- </mat-option>
-          <mat-option
-            [value]="colaborador.nomeColab"
-            *ngFor="let colaborador of colaboradores"
-            >{{ colaborador.nomeColab }}</mat-option
+          <mat-option (click)="carregarColaboradores()"> -- select Departamento -- </mat-option>
+          <mat-option (click)="carregarSelectColaboradorEDatasorce()" [value]="departamento.nome" *ngFor="let departamento of dataSourceSelectDepartamento"
+
+            >{{departamento.nome}}</mat-option
           >
         </mat-select>
       </mat-form-field>
@@ -31,10 +29,9 @@
         <mat-label> Colaborador </mat-label>
         <mat-select matNativeControl formControlName="colaborador">
           <mat-option> -- select colaborador -- </mat-option>
-          <mat-option
-            [value]="colaborador.nomeColab"
-            *ngFor="let colaborador of colaboradores"
-            >{{ colaborador.nomeColab }}</mat-option
+          <mat-option (click)="findByDepartamentoAndNomeColaboradore()" [value]="colab.nomeColab"  *ngFor="let colab of dataSourceSelectColaborador"
+
+            >{{colab.nomeColab}}</mat-option
           >
         </mat-select>
       </mat-form-field>

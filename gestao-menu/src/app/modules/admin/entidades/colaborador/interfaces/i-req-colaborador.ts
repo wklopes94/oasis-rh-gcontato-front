@@ -6,7 +6,6 @@ export interface IReqColaborador {
   emailColab: string,
   enderecoColab: string,
   numeroRh: string,
-  extensaofk: string,
   tipoColabFk: string,
   departamentoFk: string,
 }

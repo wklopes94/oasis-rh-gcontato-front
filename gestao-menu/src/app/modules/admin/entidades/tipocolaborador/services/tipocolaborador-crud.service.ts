@@ -83,5 +83,41 @@ export class TipocolaboradorCrudService extends ApiCrudService<ITipocolaborador>
     );
   }
 
+  findByAtivo(
+    estado: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+
+  ): Observable<IResponsePageableTipocolaborador> {
+    console.log('ENTROU');
+
+    //http://localhost:8686/xxxxxx?page=0&size=2&sort=nome,asc
+
+    let url = `${super.getAPIURL}/search/findByEstado?estado=${estado}&page=${page}&size=${size}&sort=${sort},${ordem}`;
+    return this.http
+      .get<IResponsePageableTipocolaborador>(url, { headers: super.headers })
+      .pipe(delay(0),take(1));
+  }
+
+  findByTipoColaboradorAndEstado(
+    tipoColaborador: string,
+    estado: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+
+  ): Observable<IResponsePageableTipocolaborador> {
+    console.log('ENTROU');
+
+    //http://localhost:8686/xxxxxx?page=0&size=2&sort=nome,asc
+
+    let url = `${super.getAPIURL}/search/findByTipoColaboradorAndEstado?tipoColaborador=${tipoColaborador}&estado=${estado}&page=${page}&size=${size}&sort=${sort},${ordem}`;
+    return this.http
+      .get<IResponsePageableTipocolaborador>(url, { headers: super.headers })
+      .pipe(delay(0),take(1));
+  }
 
 }

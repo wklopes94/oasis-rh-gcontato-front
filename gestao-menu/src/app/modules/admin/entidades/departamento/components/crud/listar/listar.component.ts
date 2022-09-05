@@ -3,7 +3,7 @@ import { HotelCrudService } from './../../../../hotel/services/hotel-crud.servic
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { IDepartamento } from '../../../interfaces/i-departamento';
-import { Router } from '@angular/router';
+
 import { MyPages } from 'src/app/my-shared/interfaces-shared/my-pages';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlterarComponent } from '../alterar/alterar.component';
 import { CriarComponent } from '../criar/criar.component';
 import { ApagarComponent } from '../apagar/apagar.component';
-import { IResponsePageableDepartamento } from '../../../interfaces/i-response-pageable-departamento';
+
 import { IHotel } from '../../../../hotel/interfaces/i-hotel';
 import { IResponsePageableHotel } from '../../../../hotel/interfaces/i-response-pageable-hotel';
 
@@ -90,7 +90,14 @@ export class ListarComponent implements AfterViewInit {
     this.carregarHotelSelect();
   }
 
+  clickHotel(){
+    this.carregarDepartamento();
+    this.resetDep();
+  }
+
   carregarDepartamento() {
+
+
 
     this.carregando = true;
     let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
@@ -119,9 +126,13 @@ export class ListarComponent implements AfterViewInit {
               elem.hotelFk = JSON.parse(hotel).nome;
               console.log(elem.hotelFk);
 
+              this.resetDep();
             });
         });
       });
+
+
+
   }
 
   carregarDepartamentoSelect() {
@@ -268,5 +279,9 @@ export class ListarComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  resetDep(): void{
+    this.formPesquisa.get('departamento')?.reset();
   }
 }

@@ -55,5 +55,48 @@ export class ColaboradorCrudService extends ApiCrudService<IColaborador> {
       .pipe(take(1));
   }
 
+  findByHotelFk(page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+    hotel: string): Observable<IResponsePageableColaborador>{
+    let url = `${super.getAPIURL}/search/findByDepartamentoFkHotelFkNome?nome=${hotel}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableColaborador>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
+
+  findByDepartamentoFk(departamento: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+
+    ): Observable<IResponsePageableColaborador>{
+    let url = `${super.getAPIURL}/search/findByDepartamentoFkNome?nome=${departamento}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableColaborador>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
+
+
+  findByDepartamentoFkAndNomeColab(
+    nome: string,
+    departamento: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,
+
+    ): Observable<IResponsePageableColaborador>{
+    let url = `${super.getAPIURL}/search/findByNomeColabAndDepartamentoFkNome?numero=${nome}&departamento=${departamento}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableColaborador>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+  }
+
 
 }
