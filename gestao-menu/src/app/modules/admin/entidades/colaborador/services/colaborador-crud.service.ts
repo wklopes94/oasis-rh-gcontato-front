@@ -91,7 +91,7 @@ export class ColaboradorCrudService extends ApiCrudService<IColaborador> {
     ordem: string,
 
     ): Observable<IResponsePageableColaborador>{
-    let url = `${super.getAPIURL}/search/findByNomeColabAndDepartamentoFkNome?numero=${nome}&departamento=${departamento}&page=${page}&size=${size}&sort=${sort},${ordem}`
+    let url = `${super.getAPIURL}/search/findByNomeColabAndDepartamentoFkNome?nome=${nome}&departamento=${departamento}&page=${page}&size=${size}&sort=${sort},${ordem}`
 
     return this.http
     .get<IResponsePageableColaborador>(url, { headers: super.headers })

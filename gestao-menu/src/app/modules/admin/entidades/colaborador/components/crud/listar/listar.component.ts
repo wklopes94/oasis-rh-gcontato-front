@@ -347,6 +347,9 @@ export class ListarComponent implements AfterViewInit {
     this.sort = this.sortEvent ? this.sortEvent.active : 'nomeColab';
     this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
 
+    console.log('Colaborador: ', this.formPesquisa?.value.colaborador);
+    console.log('Departamento: ', this.formPesquisa?.value.departamento);
+
     return this.service
       .findByDepartamentoFkAndNomeColab(this.formPesquisa?.value.colaborador, this.formPesquisa?.value.departamento, pageIndex, pageSize, this.sort, this.direccaoOrdem)
       .subscribe((data: {}) => {
