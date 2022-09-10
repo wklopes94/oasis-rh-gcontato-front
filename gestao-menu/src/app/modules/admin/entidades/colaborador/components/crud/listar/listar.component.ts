@@ -276,7 +276,12 @@ export class ListarComponent implements AfterViewInit {
     this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
 
     return this.service
-      .findByDepartamentoFk(this.formPesquisa?.value.departamento, pageIndex, pageSize, this.sort, this.direccaoOrdem)
+      .findByDepartamentoFkHotelFkNomeAndDepartamentoFkNome(this.formPesquisa?.value.hotel,
+        this.formPesquisa?.value.departamento,
+        pageIndex,
+        pageSize,
+        this.sort,
+        this.direccaoOrdem)
       .subscribe((data: {}) => {
         this.resultado = data;
         //this.colaboradoreSearch = this.resultado._embedded.colaboradores;
@@ -325,7 +330,7 @@ export class ListarComponent implements AfterViewInit {
     this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
 
     return this.service
-      .findByDepartamentoFk(this.formPesquisa?.value.departamento, pageIndex, pageSize, this.sort, this.direccaoOrdem)
+      .findByDepartamentoFkHotelFkNomeAndDepartamentoFkNome(this.formPesquisa?.value.hotel, this.formPesquisa?.value.departamento, pageIndex, pageSize, this.sort, this.direccaoOrdem)
       .subscribe((data: {}) => {
         this.resultado = data;
         this.dataSourceSelectColaborador = this.resultado._embedded.colaboradores;
@@ -351,7 +356,7 @@ export class ListarComponent implements AfterViewInit {
     console.log('Departamento: ', this.formPesquisa?.value.departamento);
 
     return this.service
-      .findByDepartamentoFkAndNomeColab(this.formPesquisa?.value.colaborador, this.formPesquisa?.value.departamento, pageIndex, pageSize, this.sort, this.direccaoOrdem)
+      .findByDepartamentoFkHotelFkNomeAndDepartamentoFkNomeAndNomeColab(this.formPesquisa?.value.hotel, this.formPesquisa?.value.departamento, this.formPesquisa?.value.colaborador, pageIndex, pageSize, this.sort, this.direccaoOrdem)
       .subscribe((data: {}) => {
         this.resultado = data;
         //this.colaboradoreSearch = this.resultado._embedded.colaboradores;

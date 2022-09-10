@@ -98,5 +98,36 @@ export class ColaboradorCrudService extends ApiCrudService<IColaborador> {
     .pipe(delay(0),take(1));
   }
 
+  findByDepartamentoFkHotelFkNomeAndDepartamentoFkNome(
+    hotel: string,
+    departamento: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,): Observable<IResponsePageableColaborador>{
+    let url = `${super.getAPIURL}/search/findByDepartamentoFkHotelFkNomeAndDepartamentoFkNome?hotel=${hotel}&departamento=${departamento}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableColaborador>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+
+  }
+
+  findByDepartamentoFkHotelFkNomeAndDepartamentoFkNomeAndNomeColab(
+    hotel: string,
+    departamento: string,
+    colaborador: string,
+    page: number,
+    size: number,
+    sort: string,
+    ordem: string,): Observable<IResponsePageableColaborador>{
+    let url = `${super.getAPIURL}/search/findByDepartamentoFkHotelFkNomeAndDepartamentoFkNomeAndNomeColab?hotel=${hotel}&departamento=${departamento}&colaborador=${colaborador}&page=${page}&size=${size}&sort=${sort},${ordem}`
+
+    return this.http
+    .get<IResponsePageableColaborador>(url, { headers: super.headers })
+    .pipe(delay(0),take(1));
+
+  }
+
 
 }
