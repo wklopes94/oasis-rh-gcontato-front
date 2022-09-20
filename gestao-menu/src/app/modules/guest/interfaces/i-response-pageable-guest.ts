@@ -1,10 +1,11 @@
-import { IHotel } from './i-hotel';
+
+import { IGuest } from "./i-guest";
 import { MyPages } from "src/app/my-shared/interfaces-shared/my-pages";
 
 
-export interface IResponsePageableHotel {
+export interface IResponsePageableGuest {
 
-  _embedded: {hoteis: IHotel[]};
+  _embedded: {hoteis: IGuest[]};
   _links: {
       self: { href: string ; };
       profile: { href: string ;};
@@ -12,3 +13,5 @@ export interface IResponsePageableHotel {
   };
   page: MyPages;
 }
+
+

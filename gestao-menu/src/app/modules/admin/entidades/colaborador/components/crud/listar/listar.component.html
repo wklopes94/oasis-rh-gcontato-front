@@ -95,11 +95,11 @@
 
                   <mat-header-cell class="action-column" mat-header-cell *matHeaderCellDef>AÇÕES:</mat-header-cell>
                   <mat-cell *matCellDef="let row" class="action-column">
-                    <button mat-icon-button color="primary" aria-label="ver" (click)="alterarColaborador()">
+                    <button mat-icon-button color="primary" aria-label="ver" (click)="alterarColaborador(row.id)">
                       <mat-icon>edit</mat-icon>
                   </button>
 
-                  <button mat-icon-button color="warn"aria-label="apagar"  (click)="apagarColaborador()">
+                  <button mat-icon-button color="warn"aria-label="apagar"  (click)="apagarColaborador(row.id)">
                     <mat-icon>delete</mat-icon>
                   </button>
                   </mat-cell>

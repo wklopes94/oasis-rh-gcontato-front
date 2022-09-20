@@ -2,10 +2,8 @@ import { IColaborador } from './../admin/entidades/colaborador/interfaces/i-cola
 import { IHotel } from './../admin/entidades/hotel/interfaces/i-hotel';
 import { DepartamentoCrudService } from './../admin/entidades/departamento/services/departamento-crud.service';
 import { HotelCrudService } from './../admin/entidades/hotel/services/hotel-crud.service';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IReqColaborador } from '../admin/entidades/colaborador/interfaces/i-req-colaborador';
 import { MyPages } from 'src/app/my-shared/interfaces-shared/my-pages';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
@@ -14,6 +12,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { IDepartamento } from '../admin/entidades/departamento/interfaces/i-departamento';
 import { MatDialog } from '@angular/material/dialog';
 import { IResponsePageableHotel } from '../admin/entidades/hotel/interfaces/i-response-pageable-hotel';
+import { GuestCrudService } from './services/guest-crud.service';
+import { IGuest } from './interfaces/i-guest';
 
 @Component({
   selector: 'app-guest',
@@ -39,6 +39,7 @@ export class GuestComponent implements AfterViewInit {
   dataSourceSelectDepartamento: IDepartamento[] = [];
   dataSourceSelectHotel: IHotel[] = [];
   dataSource: IColaborador[] = [];
+  dataSourceHotel: IGuest[] = [];
 
   //PAGINAÇÃO
   mypages?: MyPages;
@@ -84,13 +85,14 @@ export class GuestComponent implements AfterViewInit {
     private FormBuilder: FormBuilder,
     private dialog : MatDialog,
     private serviceHotel: HotelCrudService,
-    private serviceDepartamento: DepartamentoCrudService) {
+    private serviceDepartamento: DepartamentoCrudService,
+    private serviceGuest: GuestCrudService) {
 
   }
 
 
   ngAfterViewInit() {
-    this.carregarColaboradores();
+    this.carregarHotel();
     this.carregarHotelSelect();
   }
 
@@ -103,6 +105,42 @@ export class GuestComponent implements AfterViewInit {
   carregarSelectColaboradorEDatasorce(){
     this.findByDepartamentoFkForDtasource();
     this.findByDepartamentoFkForSelect();
+  }
+
+  carregarHotel(){
+
+    let pageIndex = this.pageEvent ? this.pageEvent.pageIndex : 0;
+    let pageSize = this.pageEvent ? this.pageEvent.pageSize : 1000000000;
+
+    //SORT
+    this.sort = this.sortEvent ? this.sortEvent.active : 'nomeColab';
+    this.direccaoOrdem = this.sortEvent ? this.sortEvent.direction : 'asc';
+
+    this.estado = 'a';
+
+    return this.serviceGuest
+    .findByAtivo(pageIndex, pageSize, this.sort, this.direccaoOrdem, this.estado)
+    .subscribe((data: {}) => {
+      this.resultado = data;
+      //this.colaboradoreSearch = this.resultado._embedded.colaboradores;
+      this.dataSourceHotel = this.resultado._embedded.hotels;
+      this.mypages = this.resultado.page;
+      this.totalElements = this.resultado.page.totalElements;
+      this.carregando = false;
+      console.log('Foi lido os seguintes dados, item: ', this.dataSourceHotel);
+
+      this.dataSourceHotel.forEach((elem) => {
+        return this.serviceGuest
+        .getDataByURLS(elem._links.departamentosModel.href)
+        .subscribe((dep: {}) => {
+          let departamentoColab = JSON.stringify(dep);
+          elem.departamento = JSON.parse(departamentoColab);
+          console.log('String de Dep: ', departamentoColab);
+          console.log('nomeDep: ', elem.departamento);
+
+        });
+      });
+    });
   }
 
   carregarColaboradores() {

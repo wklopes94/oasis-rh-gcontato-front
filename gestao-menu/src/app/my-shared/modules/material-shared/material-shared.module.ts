@@ -19,6 +19,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSortModule} from '@angular/material/sort';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 
@@ -45,6 +46,7 @@ import {MatSortModule} from '@angular/material/sort';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSortModule,
+    MatTabsModule
   ]
 })
 export class MaterialSharedModule { }

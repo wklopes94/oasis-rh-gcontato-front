@@ -26,12 +26,9 @@ import { IResponsePageableHotel } from '../../../../hotel/interfaces/i-response-
 })
 export class ListarComponent implements AfterViewInit {
 
-
-
+  isPopupOpened = true;
   carregando: boolean = false;
   estado: string = 'a';
-
-
 
   //CRIAR FORMULARIO
   formPesquisa: FormGroup = this.formBuilder.group({
@@ -394,11 +391,16 @@ export class ListarComponent implements AfterViewInit {
       });
   }
 
+  getAllHotels() {
+    return this.dataSource;
+  }
 
-
-alterarColaborador(){
+alterarColaborador(number: string){
+  this.isPopupOpened = true;
+  const colaborador = this.getAllHotels().find(c => c.id == number);
   const dialogRef = this.dialog.open(AlterarComponent, {
-      width: '30%'
+      width: '30%',
+      data: colaborador
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -408,7 +410,10 @@ alterarColaborador(){
 
 criarColaborador(){
   const dialogRef = this.dialog.open(CriaralterarComponent, {
-    width: '30%'
+    maxWidth: '80vw',
+    maxHeight: '70vw',
+    width: '70vw',
+    disableClose: true
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -416,9 +421,12 @@ criarColaborador(){
   });
 }
 
-apagarColaborador(){
+apagarColaborador(number: string){
+  this.isPopupOpened = true;
+  const colaborador = this.getAllHotels().find(c => c.id == number);
   const dialogRef = this.dialog.open(ApagarComponent, {
-    width: '30%'
+    width: '30%',
+    data: colaborador
   });
 
   dialogRef.afterClosed().subscribe(result => {

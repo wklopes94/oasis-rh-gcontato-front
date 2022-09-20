@@ -74,26 +74,26 @@
 
 <div class="footer" fxFlex="70%" ></div>
 <!-- 3nd Div -->
-<div fxFlex="70%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayout=" wrap" *ngFor="let hotel of dataSource">
+<div fxFlex="70%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayout=" wrap" *ngFor="let hotel of dataSourceHotel">
   <div fxFlex="100%" fxFlex.sm="100%"  fxFlex.xs="100%" fxLayoutAlign="center center">
     <div class="divD" fxFlex="100%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayoutAlign="star center">
       <i class="material-icons">account_balance</i>
-              Hotel: {{hotel.nomeHotel}}
+              Hotel: {{hotel.nome}}
     </div>
   </div>
 
 
   <div class="divB" fxFlex="100%" fxFlex.sm="100%" fxFlex.xs="100%" fxLayoutAlign="star center " fxLayout=" wrap">
             <i class="material-icons">contact_phone</i>
-                    Fax:
+                    Fax: {{hotel.numeroFixo}}
 
             <i class="material-icons">phone</i>
-                    Telefone:
+                    Telefone: {{hotel.numeroFixo}}
 
-      <div class="divW"  fxFlex="100%" fxFlex.sm="100%"  fxFlex.xs="100%" fxLayoutAlign="star center " fxLayout=" wrap" >
+      <div class="divW"  fxFlex="100%" fxFlex.sm="100%"  fxFlex.xs="100%" fxLayoutAlign="star center " fxLayout=" wrap" *ngFor="let dep of hotel.departamento">
 
              <i class="material-icons">table_chart</i>
-                  Departamento: <div fxLayoutAlign="star center "> {{hotel.nomeDep}} </div>
+                  Departamento: <div fxLayoutAlign="star center "> {{dep.nome}} </div>
 
           <div class="divD" fxFlex="100%" fxFlex.sm="100%"  fxFlex.xs="100%" fxLayoutAlign="star center ">
 
@@ -115,7 +115,7 @@
                   <div class="divF" fxFlex="100%" fxFlex.sm="70%" fxFlex.xs="10%" fxLayoutAlign="star end">
 
                         <i class="material-icons">account_box</i>
-                      {{hotel.nomeColab}}
+                      {{hotel.colaborador}}
 
                       <i class="material-icons">phone</i>
                       {{hotel.telefoneColab}}
@@ -124,7 +124,7 @@
                       {{hotel.emailColab}}
 
                       <i class="material-icons">pin_drop</i>
-                      {{hotel.enderecoColab}}
+
 
                </div>
           </div>
@@ -147,3 +147,32 @@
 <div class="footer" fxFlex="100%"></div>
 <!-- end -->
 </div>
+
+<mat-tab-group dynamicHeight mat-align-tabs="center" style="padding-top: 40px; padding-left: 15%; padding-right: 15%;">
+  <mat-tab *ngFor="let hotel of dataSourceHotel" label={{hotel.nome}}>
+    <div fxLayout="column" fxLayoutAlign="space-around center" style="padding: 2%;">
+
+      <div style="margin: 0.5%;">
+
+        <mat-card class="example-card" style="padding: 2%;"
+        fxFlex="1 1 calc(33.3% - 11px)"
+        fxFlex.lt-md="0 1 calc(50% - 11px)"
+        fxFlex.lt-sm="100%">
+          <mat-card-header>
+
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+              bred for hunting.
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+      </div>
+
+    </div>
+
+  </mat-tab>
+</mat-tab-group>

@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MyPages } from 'src/app/my-shared/interfaces-shared/my-pages';
 import { IDepartamento } from '../../../../departamento/interfaces/i-departamento';
 import { DepartamentoCrudService } from '../../../../departamento/services/departamento-crud.service';
