@@ -9,14 +9,13 @@ export interface IGuest {
   numeroFixo: string,
 
   /*departamento related */
-  departamento: IDepartamento [];
+  departamentosModel: IDepartamento [],
+
   /*Extensao related*/
-  extensao: IExtensao[];
+  extensaoModel: IExtensao [],
 
   /*colaborador related*/
   colaborador: IColaborador[],
-  telefoneColab: String,
-  emailColab: String,
 
   /*tipocolaborador related*/
   tipoColab: string,

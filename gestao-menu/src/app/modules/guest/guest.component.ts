@@ -1,3 +1,4 @@
+import { ExtensaoCrudService } from './../admin/entidades/extensao/services/extensao-crud.service';
 import { IColaborador } from './../admin/entidades/colaborador/interfaces/i-colaborador';
 import { IHotel } from './../admin/entidades/hotel/interfaces/i-hotel';
 import { DepartamentoCrudService } from './../admin/entidades/departamento/services/departamento-crud.service';
@@ -86,7 +87,9 @@ export class GuestComponent implements AfterViewInit {
     private dialog : MatDialog,
     private serviceHotel: HotelCrudService,
     private serviceDepartamento: DepartamentoCrudService,
-    private serviceGuest: GuestCrudService) {
+    private serviceGuest: GuestCrudService,
+    private serviceExtensao: ExtensaoCrudService,
+    private serviceColaborador: ColaboradorCrudService) {
 
   }
 
@@ -130,14 +133,21 @@ export class GuestComponent implements AfterViewInit {
       console.log('Foi lido os seguintes dados, item: ', this.dataSourceHotel);
 
       this.dataSourceHotel.forEach((elem) => {
-        return this.serviceGuest
+        console.log('Elem: ', elem);
+        return this.serviceDepartamento
         .getDataByURLS(elem._links.departamentosModel.href)
-        .subscribe((dep: {}) => {
-          let departamentoColab = JSON.stringify(dep);
-          elem.departamento = JSON.parse(departamentoColab);
+        .subscribe((dep): {} => {
+          let departamentoColab = JSON.stringify(dep._embedded.departamentos);
+          elem.departamentosModel = JSON.parse(departamentoColab);
           console.log('String de Dep: ', departamentoColab);
-          console.log('nomeDep: ', elem.departamento);
+          console.log('nomeDep: ', elem.departamentosModel);
 
+            return this.serviceExtensao.getDataByURLS(JSON.parse(departamentoColab)._links.extensaoModel.href)
+            .subscribe((extensoe) => {
+              let extensao = JSON.stringify(extensoe._embedded.extensoes);
+              elem.extensaoModel = JSON.parse(extensao);
+              console.log('Extensao: ', elem.extensaoModel);
+            });
         });
       });
     });
