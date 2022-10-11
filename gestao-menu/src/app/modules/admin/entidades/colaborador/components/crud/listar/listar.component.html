@@ -38,9 +38,13 @@
     </mat-toolbar>
   </p>
   </form>
+  <div class="col-md-2" fxLayoutAlign="end center" fxLayoutGap="10px" style="padding-block-end: 1%;">
+    <button mat-raised-button type="button" color="warn" (click)="exporter.exportTable('json')" >Export to PDF</button>
+    <button mat-raised-button type="button" color="primary" (click)="exporter.exportTable('xlsx')" >Export to Excel</button>
+  </div>
       <div class="mat-elevation-z8 content-table">
 
-              <mat-table class="table"  [dataSource]="dataSource" matSort (matSortChange)="sortEvent = $event; carregarColaboradores()">
+              <mat-table class="table"  [dataSource]="dataSource" matSort (matSortChange)="sortEvent = $event; carregarColaboradores()" matTableExporter #exporter="matTableExporter">
                 <ng-container matColumnDef="nomeColab">
                   <mat-header-cell  *matHeaderCellDef mat-sort-header>NOME</mat-header-cell>
                   <mat-cell  *matCellDef="let row">{{ row.nomeColab }}</mat-cell>

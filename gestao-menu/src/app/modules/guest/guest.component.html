@@ -124,6 +124,14 @@
 
   -->
 
+<mat-toolbar>
+    <mat-toolbar-row style="font-size:1.5rem; height: 80px;">
+        <span> Contactos Hotel <mat-icon>supervised_user_circle</mat-icon></span>
+        <span class="example-spacer"></span>
+        <button mat-raised-button><mat-icon>add</mat-icon>Adicionar</button>
+    </mat-toolbar-row>
+</mat-toolbar>
+
 
 <mat-tab-group dynamicHeight mat-align-tabs="center" style="padding-top: 40px; padding-left: 15%; padding-right: 15%">
   <mat-tab *ngFor="let hotel of dataSourceHotel" label="{{ hotel.nome }}">

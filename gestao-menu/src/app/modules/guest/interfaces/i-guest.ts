@@ -22,5 +22,6 @@ export interface IGuest {
 
   _links: {
     departamentosModel: { href: string ; };
+    extensaoModel: { href: string ; };
   }
 }

@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'departamentos', loadChildren: () => import('./departamento/departamento.module').then(m => m.DepartamentoModule) },
   { path: 'extensoes', loadChildren: () => import('./extensao/extensao.module').then(m => m.ExtensaoModule) },
   { path: 'hotels', loadChildren: () => import('./hotel/hotel.module').then(m => m.HotelModule) },
+  { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
 
 ];
 
