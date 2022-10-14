@@ -1,7 +1,22 @@
+<button
+  mat-icon-button
+  *ngIf="sidenav.mode === 'over'"
+  (click)="sidenav.toggle()" color="primary">
+  <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+  <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+</button>
 <mat-sidenav-container class="container">
-  <mat-sidenav mode="side" opened>
+  <mat-sidenav #sidenav="matSidenav">
+
+    <img class="avatar mat-elevation-z8" src="assets/img/perfil_1.jpg" />
+
+        <h4 class="name">Samuel Lopes</h4>
+    <p class="designation">Software Engineer</p>
+
+    <mat-divider></mat-divider>
+
     <mat-nav-list>
-      <a routerLink="./entidades/dashboard" mat-list-item>
+      <a routerLink="./entidades/dashboard" mat-list-item class="menu-button">
         <i class="material-icons">home</i>
         Home
       </a>
@@ -16,12 +31,20 @@
         Extensão
     </a>
     <a routerLink='./entidades/tipocolaboradores' mat-list-item>
-        Tipo de Colaborador
+        Tipo Colaborador
     </a>
     <a routerLink='./entidades/colaboradores' mat-list-item >
        Colaborador
     </a>
 
+    <mat-divider></mat-divider>
+
+    <p style="text-align: right;" >
+      <button mat-button style="color: #202020;">
+        Sair
+        <span class="material-icons" style="margin-left: 7px;">logout</span>
+      </button>
+    </p>
     </mat-nav-list>
 
   </mat-sidenav>

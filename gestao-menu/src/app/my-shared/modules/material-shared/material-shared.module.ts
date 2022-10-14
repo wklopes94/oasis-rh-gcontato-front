@@ -21,6 +21,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableExporterModule} from 'mat-table-exporter';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 
@@ -51,7 +53,9 @@ import {MatTableExporterModule} from 'mat-table-exporter';
     MatProgressSpinnerModule,
     MatSortModule,
     MatTabsModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    MatDividerModule,
+
   ]
 })
 export class MaterialSharedModule { }

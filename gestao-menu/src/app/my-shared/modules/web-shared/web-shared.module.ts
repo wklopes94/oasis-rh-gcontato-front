@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableExporterModule} from 'mat-table-exporter';
+
 
 
 
@@ -22,11 +22,6 @@ import {MatTableExporterModule} from 'mat-table-exporter';
     FormsModule,
     FlexLayoutModule,
     NgxChartsModule,
-
-
-
-
-
   ]
 })
 export class WebSharedModule { }

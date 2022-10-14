@@ -27,11 +27,6 @@ import { ComponentsSharedModule } from './my-shared/modules/components-shared/co
     AppRoutingModule,
     BrowserAnimationsModule,
     ComponentsSharedModule,
-
-
-
-
-
   ],
   bootstrap: [AppComponent]
 })

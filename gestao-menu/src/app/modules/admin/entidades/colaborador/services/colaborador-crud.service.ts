@@ -129,5 +129,13 @@ export class ColaboradorCrudService extends ApiCrudService<IColaborador> {
 
   }
 
+  updateDatas(id: number, record: IReqColaborador): Observable<IResponsePageableColaborador> {
+    let url = `${super.getAPIURL}/${id}`;
+    return this.http.put<IResponsePageableColaborador>(url, record, { headers: this.headers }).pipe(
+      take(1),
+      catchError(this.errorMgmt)
+    );
+  }
+
 
 }

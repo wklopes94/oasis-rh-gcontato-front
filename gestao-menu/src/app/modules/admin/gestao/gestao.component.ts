@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatSidenav } from '@angular/material/sidenav';
+import { delay, filter } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+//import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @Component({
   selector: 'app-gestao',
@@ -8,50 +12,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GestaoComponent {
 
-  view: [number, number] = [1000, 400];
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
 
-  // options
-  gradient: boolean = true;
-  showLegend: boolean = true;
-  showLabels: boolean = true;
-  isDoughnut: boolean = false;
 
-  colorScheme: any = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
-
-  single = [
-    {
-      "name": "Praia Mar",
-      "value": 40
-    },
-    {
-      "name": "Belorizonte",
-      "value": 60
-    },
-    {
-      "name": "Salinas SEA",
-      "value": 110
-    },
-      {
-      "name": "Alfanegas",
-      "value": 50
-    }
-  ];
-
-  constructor() {
+  constructor(private observer: BreakpointObserver, private router: Router) {
     //Object.assign(this, { single });
   }
 
-  onSelect(data: any): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  ngAfterViewInit() {
+   this.observer
+      .observe(['(max-width: 800px)'])
+      .subscribe((res) => {
+        if (res.matches) {
+          this.sidenav.mode = 'over';
+          this.sidenav.close();
+        } else {
+          this.sidenav.mode = 'side';
+          this.sidenav.open();
+        }
+      });
+ /*
+    this.router.events
+      .pipe(
+        untilDestroyed(this),
+        filter((e) => e instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+        if (this.sidenav.mode === 'over') {
+          this.sidenav.close();
+        }
+      });
+      */
   }
 
-  onActivate(data: any): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
-  }
 
-  onDeactivate(data: any): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  }
 }

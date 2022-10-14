@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { IReqColaborador } from './../../../interfaces/i-req-colaborador';
+import { Component,Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -15,6 +16,7 @@ import { IResponsePageableTipocolaborador } from '../../../../tipocolaborador/in
 import { ITipocolaborador } from '../../../../tipocolaborador/interfaces/i-tipocolaborador';
 import { TipocolaboradorCrudService } from '../../../../tipocolaborador/services/tipocolaborador-crud.service';
 import { ColaboradorCrudService } from '../../../services/colaborador-crud.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-alterar',
@@ -60,7 +62,8 @@ export class AlterarComponent implements OnInit {
      }
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private formBuilder: FormBuilder,
     private service: ColaboradorCrudService,
     private router: Router,
     private snack: MatSnackBar,
@@ -73,15 +76,15 @@ export class AlterarComponent implements OnInit {
     this.carregarTipoColaboradoresSelect();
 
     this.form = this.formBuilder.group({
-      nomeColab: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
-      telefoneColab: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
-      emailColab: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
-      enderecoColab: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
-      numeroRh: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      hotel: [null],
-      tipoColabFk: [''],
-      departamentoFk: [null],
-
+      id: [this.data.id],
+      nomeColab: [this.data.nomeColab, [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
+      telefoneColab: [this.data.telefoneColab, [Validators.required, Validators.minLength(3), Validators.maxLength(15)]],
+      emailColab: [this.data.emailColab, [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
+      enderecoColab: [this.data.enderecoColab, [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      numeroRh: [this.data.numeroRh, [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+      hotel: [this.data.hotel],
+      tipoColabFk: [this.data.tipoColabFk],
+      departamentoFk: [this.data.departamentoFk],
     });
   }
 
@@ -168,6 +171,51 @@ export class AlterarComponent implements OnInit {
         console.log('Foi lido os seguintes dados, item: ', this.dataSourceSelectDepartamento);
       });
 
+  }
+
+  update(): void{
+    console.log("Update JSON: "+ this.updateObjectoFromFROM())
+    this.service.updateDatas(this.form?.value.id, this.updateObjectoFromFROM()).subscribe((success) =>{
+      console.log("Update JSON: "+ this.updateObjectoFromFROM())
+        this.message("Departamento Atualizado");
+        console.error(success);
+        this.router.navigateByUrl('/', {skipLocationChange: true} ).then(() => {
+        this.router.navigate(['oa-admin/gestao/entidades/departamentos/listar']);
+        });
+
+    }, err => {
+        console.log(err)
+    })
+
+  }
+
+  updateObjectoFromFROM(): IReqColaborador{
+    //let API_URL = environment.API;
+    return {
+
+      "nomeColab": this.form?.value.nomeColab,
+       "telefoneColab": this.form?.value.telefoneColab,
+       "emailColab": this.form?.value.emailColab,
+       "enderecoColab": this.form?.value.enderecoColab,
+       "numeroRh": this.form?.value.numeroRh,
+       "tipoColabFk": "/tipocolaboradores/"+this.form?.value.tipoColabFk,
+       "departamentoFk": "/departamentos/"+this.form?.value.departamentoFk,
+
+     }
+  }
+
+  message(msg: String): void{
+    this.snack.open(`${msg}`, 'OK',{
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      duration: 4000
+    })
+
+  }
+
+  resetFields(){
+    this.form.reset();
+    alert('CLEAN FIELDS');
   }
 
 }
