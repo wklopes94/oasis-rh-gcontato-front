@@ -137,5 +137,10 @@ export class ColaboradorCrudService extends ApiCrudService<IColaborador> {
     );
   }
 
+  delete(id: String): Observable<void>{
+    const url = `${this.baseUrl}/colaboradores/${id}`
+    return this.http.delete<void>(url)
+  }
+
 
 }

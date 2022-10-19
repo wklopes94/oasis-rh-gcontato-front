@@ -1,8 +1,6 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DepartamentoCrudService } from './../../../services/departamento-crud.service';
-import { HotelCrudService } from './../../../../hotel/services/hotel-crud.service';
 import { Component, Inject, OnInit } from '@angular/core';
-import { IDepartamento } from '../../../interfaces/i-departamento';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -16,7 +14,11 @@ export class ApagarComponent implements OnInit {
 
   form: FormGroup = this.formBuilder.group({});
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private snack: MatSnackBar, private formBuilder: FormBuilder, private servicoHotel: HotelCrudService,private service: DepartamentoCrudService, private route: ActivatedRoute, private router: Router) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+  private snack: MatSnackBar,
+  private formBuilder: FormBuilder,
+  private service: DepartamentoCrudService,
+  private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({

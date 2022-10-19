@@ -180,7 +180,7 @@ export class AlterarComponent implements OnInit {
         this.message("Departamento Atualizado");
         console.error(success);
         this.router.navigateByUrl('/', {skipLocationChange: true} ).then(() => {
-        this.router.navigate(['oa-admin/gestao/entidades/departamentos/listar']);
+        this.router.navigate(['oa-admin/gestao/entidades/colaboradores/listar']);
         });
 
     }, err => {
